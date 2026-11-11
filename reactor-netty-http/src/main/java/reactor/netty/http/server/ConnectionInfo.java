@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2025 VMware, Inc. or its affiliates, All Rights Reserved.
+ * Copyright (c) 2018-2026 VMware, Inc. or its affiliates, All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -141,7 +141,7 @@ public final class ConnectionInfo {
 	public ConnectionInfo withHostAddress(InetSocketAddress hostAddress) {
 		requireNonNull(hostAddress, "hostAddress");
 		return new ConnectionInfo(hostAddress, hostAddress.getHostString(), hostAddress.getPort(), this.remoteAddress,
-				this.scheme, true);
+				this.scheme, true, this.forwardedPrefix);
 	}
 
 	/**
@@ -155,7 +155,8 @@ public final class ConnectionInfo {
 	public ConnectionInfo withHostAddress(InetSocketAddress hostAddress, String hostName, int hostPort) {
 		requireNonNull(hostAddress, "hostAddress");
 		requireNonNull(hostName, "hostName");
-		return new ConnectionInfo(hostAddress, hostName, hostPort, this.remoteAddress, this.scheme, true);
+		return new ConnectionInfo(hostAddress, hostName, hostPort, this.remoteAddress, this.scheme, true,
+				this.forwardedPrefix);
 	}
 
 	/**
@@ -165,7 +166,8 @@ public final class ConnectionInfo {
 	 */
 	public ConnectionInfo withRemoteAddress(InetSocketAddress remoteAddress) {
 		requireNonNull(remoteAddress, "remoteAddress");
-		return new ConnectionInfo(this.hostAddress, this.hostName, this.hostPort, remoteAddress, this.scheme, true);
+		return new ConnectionInfo(this.hostAddress, this.hostName, this.hostPort, remoteAddress, this.scheme, true,
+				this.forwardedPrefix);
 	}
 
 	/**
@@ -175,7 +177,8 @@ public final class ConnectionInfo {
 	 */
 	public ConnectionInfo withScheme(String scheme) {
 		requireNonNull(scheme, "scheme");
-		return new ConnectionInfo(this.hostAddress, this.hostName, this.hostPort, this.remoteAddress, scheme, this.isInetAddress);
+		return new ConnectionInfo(this.hostAddress, this.hostName, this.hostPort, this.remoteAddress, scheme,
+				this.isInetAddress, this.forwardedPrefix);
 	}
 
 	/**

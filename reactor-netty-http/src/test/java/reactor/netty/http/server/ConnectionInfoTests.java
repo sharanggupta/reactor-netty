@@ -1026,6 +1026,21 @@ class ConnectionInfoTests extends BaseHttpTest {
 	}
 
 	@Test
+	void forwardedPrefixIsKeptWhenAnotherValueIsUpdated() {
+		ConnectionInfo connectionInfo =
+				new ConnectionInfo(new InetSocketAddress("127.0.0.1", 8080), new InetSocketAddress("127.0.0.1", 9090), false)
+						.withForwardedPrefix("/api");
+
+		assertThat(connectionInfo.withScheme("https").getForwardedPrefix()).isEqualTo("/api");
+		assertThat(connectionInfo.withRemoteAddress(new InetSocketAddress("192.0.2.60", 4711)).getForwardedPrefix())
+				.isEqualTo("/api");
+		assertThat(connectionInfo.withHostAddress(new InetSocketAddress("192.0.2.61", 4712)).getForwardedPrefix())
+				.isEqualTo("/api");
+		assertThat(connectionInfo.withHostAddress(new InetSocketAddress("192.0.2.61", 4712), "example.org", 443)
+				.getForwardedPrefix()).isEqualTo("/api");
+	}
+
+	@Test
 	void forwardedBy() {
 		testClientRequest(
 				clientRequestHeaders -> clientRequestHeaders.add("Forwarded",
